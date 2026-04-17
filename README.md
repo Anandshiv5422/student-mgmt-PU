@@ -164,3 +164,8 @@ npm test
 ## 👨‍💻 Author
 
 Anandshiv
+<img width="1907" height="867" alt="image" src="https://github.com/user-attachments/assets/4ba2cb5e-4798-4c23-ab57-f35394f7bd83" />
+<img width="1902" height="870" alt="image" src="https://github.com/user-attachments/assets/50275db5-b391-42fd-af9e-beca164ff509" />
+<img width="1902" height="865" alt="image" src="https://github.com/user-attachments/assets/8bd9936a-cdd5-4afc-8b29-a876dd05203c" />
+
+
