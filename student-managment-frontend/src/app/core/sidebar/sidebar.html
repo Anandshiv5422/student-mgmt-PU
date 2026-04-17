@@ -1,0 +1,20 @@
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="logo-container">
+      <img src="/logo_black.png" alt="Pillai University" class="logo" />
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    @for (item of navItems; track item.title) {
+      <a 
+        [routerLink]="item.route" 
+        routerLinkActive="active" 
+        class="nav-item"
+      >
+        <lucide-icon [img]="item.icon" class="icon"></lucide-icon>
+        <span>{{ item.title }}</span>
+      </a>
+    }
+  </nav>
+</aside>

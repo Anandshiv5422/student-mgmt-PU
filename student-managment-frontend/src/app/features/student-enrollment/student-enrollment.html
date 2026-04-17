@@ -1,0 +1,288 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1 class="page-title">Student Enrollment</h1>
+    <div class="page-meta">
+      Enrollment <span>Academic Year 2026-27</span>
+    </div>
+  </div>
+
+  <div class="form-wrapper shadow-md">
+    <form [formGroup]="enrollmentForm" (ngSubmit)="onSubmit()">
+      
+      @if (errorMessage) {
+        <div class="error-alert animated shake">
+          <lucide-icon [img]="CheckCircle" class="alert-icon"></lucide-icon>
+          <div class="alert-content">
+            <strong>Action Failed</strong>
+            <p>{{ errorMessage }}</p>
+          </div>
+          <button type="button" class="alert-close" (click)="errorMessage = null">×</button>
+        </div>
+      }
+      
+      <!-- Profile Section -->
+      <div class="profile-upload">
+        <div class="avatar-wrapper">
+          @if (imagePreview) {
+            <img [src]="imagePreview" alt="Preview" class="preview-img">
+          } @else {
+            <div class="skeleton-avatar">
+              <!-- <lucide-icon [img]="User" class="placeholder-icon"></lucide-icon> -->
+            </div>
+          }
+          <label for="photo-upload" class="upload-btn">
+            <lucide-icon [img]="Camera" class="icon"></lucide-icon>
+          </label>
+          <input type="file" id="photo-upload" (change)="onFileChange($event)" accept="image/*" hidden>
+        </div>
+        <div class="upload-info">
+          <h3>Profile Photo</h3>
+          <p>Upload a clear passport size photo</p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <!-- Name Group -->
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" formControlName="firstName" placeholder="Enter first name" [class.error]="f['firstName'].touched && f['firstName'].invalid">
+          @if (f['firstName'].touched && f['firstName'].errors?.['required']) {
+            <span class="error-msg">First name is required</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" formControlName="lastName" placeholder="Enter last name" [class.error]="f['lastName'].touched && f['lastName'].invalid">
+          @if (f['lastName'].touched && f['lastName'].errors?.['required']) {
+            <span class="error-msg">Last name is required</span>
+          }
+        </div>
+
+        <!-- Academic Group -->
+        <div class="form-group">
+          <label>Department</label>
+          <div class="select-wrapper">
+            <select formControlName="department" [class.error]="f['department'].touched && f['department'].invalid">
+              <option value="" disabled>Select department</option>
+              @for (dept of departments; track dept) {
+                <option [value]="dept">{{ dept }}</option>
+              }
+            </select>
+          </div>
+          @if (f['department'].touched && f['department'].errors?.['required']) {
+            <span class="error-msg">Department is required</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Study Path</label>
+          <div class="select-wrapper" [class.disabled]="enrollmentForm.get('study')?.disabled">
+            <select formControlName="study" [class.error]="f['study'].touched && f['study'].invalid">
+              <option value="" disabled>Select study</option>
+              @for (study of availableStudyPaths; track study) {
+                <option [value]="study">{{ study }}</option>
+              }
+            </select>
+          </div>
+          @if (f['study'].touched && f['study'].errors?.['required']) {
+            <span class="error-msg">Study path is required</span>
+          } @else if (enrollmentForm.get('study')?.disabled) {
+            <span class="hint-msg">Please select a Department first</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Course</label>
+          <div class="select-wrapper" [class.disabled]="enrollmentForm.get('course')?.disabled">
+            <select formControlName="course" [class.error]="f['course'].touched && f['course'].invalid">
+              <option value="" disabled>Select course</option>
+              @for (course of availableCourses; track course) {
+                <option [value]="course">{{ course }}</option>
+              }
+            </select>
+          </div>
+          @if (f['course'].touched && f['course'].errors?.['required']) {
+            <span class="error-msg">Course is required</span>
+          } @else if (enrollmentForm.get('course')?.disabled) {
+            <span class="hint-msg">Please select a Study Path first</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Current Semester</label>
+          <div class="select-wrapper">
+            <select formControlName="semester" [class.error]="f['semester'].touched && f['semester'].invalid">
+              <option value="" disabled>Select semester</option>
+              @for (sem of semesters; track sem) {
+                <option [value]="sem">{{ sem }}</option>
+              }
+            </select>
+          </div>
+          @if (f['semester'].touched && f['semester'].errors?.['required']) {
+            <span class="error-msg">Semester is required</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Admission Year</label>
+          <input type="number" formControlName="year" placeholder="e.g. 2024" [class.error]="f['year'].touched && f['year'].invalid">
+          @if (f['year'].touched && f['year'].errors?.['required']) {
+            <span class="error-msg">Year is required</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <input type="date" formControlName="dob" [class.error]="f['dob'].touched && f['dob'].invalid">
+          @if (f['dob'].touched && f['dob'].errors?.['required']) {
+            <span class="error-msg">Date of birth is required</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Gender</label>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" formControlName="gender" value="Male"> Male
+            </label>
+            <label class="radio-label">
+              <input type="radio" formControlName="gender" value="Female"> Female
+            </label>
+            <label class="radio-label">
+              <input type="radio" formControlName="gender" value="Other"> Other
+            </label>
+          </div>
+          @if (f['gender'].touched && f['gender'].errors?.['required']) {
+            <span class="error-msg">Gender selection is required</span>
+          }
+        </div>
+
+        <div class="form-group full-width">
+          <label>Email Address</label>
+          <input type="email" formControlName="email" placeholder="student@example.com" [class.error]="f['email'].touched && f['email'].invalid">
+          @if (f['email'].touched && f['email'].errors?.['email']) {
+            <span class="error-msg">Please enter a valid email</span>
+          }
+        </div>
+
+        <div class="form-group full-width">
+          <label>Mobile Number</label>
+          <input type="tel" formControlName="mobile" placeholder="10-digit number" [class.error]="f['mobile'].touched && f['mobile'].invalid">
+          @if (f['mobile'].touched && f['mobile'].errors?.['pattern']) {
+            <span class="error-msg">Enter a valid 10-digit number</span>
+          }
+        </div>
+
+        <!-- Address Section -->
+        <div class="section-title full-width">Personal Address</div>
+
+        <div class="form-group">
+          <label>State</label>
+          <div class="select-wrapper">
+            <select formControlName="state" [class.error]="f['state'].touched && f['state'].invalid">
+              <option value="" disabled>Select state</option>
+              @for (state of states; track state) {
+                <option [value]="state">{{ state }}</option>
+              }
+            </select>
+          </div>
+          @if (f['state'].touched && f['state'].errors?.['required']) {
+            <span class="error-msg">State is required</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>City</label>
+          <div class="select-wrapper">
+            <select formControlName="city" [class.error]="f['city'].touched && f['city'].invalid">
+              <option value="" disabled>Select city</option>
+              @for (city of availableCities; track city) {
+                <option [value]="city">{{ city }}</option>
+              }
+            </select>
+          </div>
+          @if (f['city'].touched && f['city'].errors?.['required']) {
+            <span class="error-msg">City is required</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Address Line</label>
+          <input type="text" formControlName="addressLine" placeholder="Flat No, Street, Area" [class.error]="f['addressLine'].touched && f['addressLine'].invalid">
+          @if (f['addressLine'].touched && f['addressLine'].errors?.['required']) {
+            <span class="error-msg">Address is required</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Zip Code</label>
+          <input type="text" formControlName="zip" placeholder="6-digit ZIP" [class.error]="f['zip'].touched && f['zip'].invalid">
+          @if (f['zip'].touched && (f['zip'].errors?.['required'] || f['zip'].errors?.['pattern'])) {
+            <span class="error-msg">Valid 6-digit ZIP code is required</span>
+          }
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="submit-btn" [disabled]="isSubmitting">
+          @if (isSubmitting) {
+            <span class="btn-loader"></span>
+            Processing...
+          } @else {
+            {{ isEditing ? 'Update Student Record' : 'Complete Registration' }}
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ID Card Modal -->
+@if (showIdCard && submittedStudent) {
+  <div class="modal-overlay" (click)="closeIdCard()">
+    <div class="id-card-wrapper" (click)="$event.stopPropagation()">
+      <div class="id-card">
+        <div class="card-gradient"></div>
+        <div class="card-content">
+          <div class="card-photo">
+            <img [src]="submittedStudent.photo || 'https://via.placeholder.com/150'" alt="Student">
+            <div class="status-badge">
+              <lucide-icon [img]="CheckCircle" class="icon"></lucide-icon>
+            </div>
+          </div>
+          
+          <div class="student-name">
+            {{ submittedStudent.name }}
+            <lucide-icon [img]="CheckCircle" class="verified-icon"></lucide-icon>
+          </div>
+          
+          <p class="tagline">Success! Student enrolled into {{ submittedStudent.course }}</p>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Course</span>
+              <span class="value">{{ submittedStudent.course }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">ID Number</span>
+              <span class="value">{{ submittedStudent.admissionNo }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Contact</span>
+              <span class="value">{{ submittedStudent.mobile }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Email</span>
+              <span class="value truncate">{{ submittedStudent.email }}</span>
+            </div>
+          </div>
+
+          <button class="follow-btn" (click)="closeIdCard()">
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

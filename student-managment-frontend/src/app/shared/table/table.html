@@ -1,0 +1,76 @@
+<div class="table-container shadow-sm">
+  <div class="table-scroll">
+    <table class="data-table">
+    <thead>
+      <tr>
+        <th class="checkbox-cell">
+          <input type="checkbox" class="custom-checkbox">
+        </th>
+        @for (col of columns; track col.key) {
+          <th (click)="col.sort && sortBy(col.key)" [class.sortable]="col.sort">
+            <div class="th-content">
+              <span>{{ col.label }}</span>
+              @if (col.sort) {
+                <lucide-icon [img]="ArrowUpDown" class="sort-icon"></lucide-icon>
+              }
+            </div>
+          </th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of displayedData; track item.id || $index) {
+        <tr>
+          <td class="checkbox-cell">
+            <input type="checkbox" class="custom-checkbox">
+          </td>
+          @for (col of columns; track col.key) {
+            <td>
+              @if (col.type === 'badge') {
+                <span class="badge" [ngClass]="item[col.key] | lowercase">
+                  {{ formatData(item, col) }}
+                </span>
+              } @else if (col.type === 'action') {
+                <div class="action-buttons">
+                  <button class="action-btn view" title="View" (click)="onView.emit(item)">
+                    <lucide-icon [img]="Eye" class="icon"></lucide-icon>
+                  </button>
+                  <button class="action-btn edit" title="Edit" (click)="onEdit.emit(item)">
+                    <lucide-icon [img]="Edit" class="icon"></lucide-icon>
+                  </button>
+                  <button class="action-btn delete" title="Delete" (click)="onDelete.emit(item)">
+                    <lucide-icon [img]="Trash2" class="icon"></lucide-icon>
+                  </button>
+                </div>
+              } @else {
+                <span>{{ formatData(item, col) }}</span>
+              }
+            </td>
+          }
+        </tr>
+      }
+      
+      @if (displayedData.length === 0) {
+        <tr>
+          <td [attr.colspan]="columns.length + 1" class="empty-state">
+            No data available.
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+    <div class="page-controls">
+      <button class="page-btn" [disabled]="currentPage === 1" (click)="prevPage()">
+        <lucide-icon [img]="ChevronLeft" class="icon"></lucide-icon>
+      </button>
+      <button class="page-btn" [disabled]="currentPage === totalPages || totalPages === 0" (click)="nextPage()">
+        <lucide-icon [img]="ChevronRight" class="icon"></lucide-icon>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,76 @@
+:host {
+  display: inline-block;
+  position: relative;
+}
+
+.filter-dropdown {
+  position: relative;
+}
+
+.filter-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  color: var(--text-gray);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-speed);
+}
+
+.filter-toggle:hover, .filter-toggle.active {
+  border-color: var(--accent-color);
+  color: var(--text-dark);
+}
+
+.filter-toggle .icon {
+  width: 16px;
+  height: 16px;
+  color: var(--primary-color);
+}
+
+.filter-toggle .chevron {
+  width: 14px;
+  height: 14px;
+  margin-left: 0.25rem;
+  transition: transform var(--transition-speed);
+}
+
+.filter-toggle .chevron.rotated {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 160px;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  z-index: 100;
+  padding: 0.5rem 0;
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--text-dark);
+  transition: background-color var(--transition-speed);
+}
+
+.dropdown-item:hover {
+  background-color: var(--bg-color);
+}
+
+.dropdown-item.active {
+  background-color: rgba(255, 195, 21, 0.1);
+  color: var(--primary-color);
+  font-weight: 600;
+}

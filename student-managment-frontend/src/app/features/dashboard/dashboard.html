@@ -1,0 +1,146 @@
+<div class="page-container">
+  <div class="dashboard-container">
+  <!-- Header -->
+  <div class="dashboard-header animated fadeIn">
+    <div class="header-content">
+      <h1 class="title">Administrative Overview</h1>
+      <p class="subtitle">Real-time statistics and recent student enrollments</p>
+    </div>
+    <div class="quick-actions">
+      <button class="btn-primary" routerLink="/enrollment">
+        <lucide-icon [img]="UsersIcon" class="icon"></lucide-icon>
+        New Enrollment
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="stats-grid" [class.skeleton-loading]="isLoading">
+    <div class="stat-card students animated fadeInUp">
+      <div class="card-icon">
+        <lucide-icon [img]="UsersIcon"></lucide-icon>
+      </div>
+      <div class="card-data">
+        <span class="label">Total Students</span>
+        <h3 class="value">{{ isLoading ? '...' : totalStudents }}</h3>
+        <div class="trend positive">
+          <lucide-icon [img]="ArrowRightIcon" class="trend-icon"></lucide-icon>
+          Active registration
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-card lessons animated fadeInUp" style="animation-delay: 0.1s">
+      <div class="card-icon">
+        <lucide-icon [img]="BookIcon"></lucide-icon>
+      </div>
+      <div class="card-data">
+        <span class="label">Total Lessons</span>
+        <h3 class="value">{{ isLoading ? '...' : totalLessons }}</h3>
+        <span class="status">Curriculum active</span>
+      </div>
+    </div>
+
+    <div class="stat-card departments animated fadeInUp" style="animation-delay: 0.2s">
+      <div class="card-icon">
+        <lucide-icon [img]="LayersIcon"></lucide-icon>
+      </div>
+      <div class="card-data">
+        <span class="label">Departments</span>
+        <h3 class="value">{{ isLoading ? '...' : totalDepartments }}</h3>
+        <span class="status">Academic wings</span>
+      </div>
+    </div>
+
+    <div class="stat-card courses animated fadeInUp" style="animation-delay: 0.3s">
+      <div class="card-icon">
+        <lucide-icon [img]="GraduationIcon"></lucide-icon>
+      </div>
+      <div class="card-data">
+        <span class="label">Active Courses</span>
+        <h3 class="value">{{ isLoading ? '...' : activeCourses }}</h3>
+        <span class="status">Market relevant</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Areas -->
+  <div class="dashboard-content">
+    <!-- Recent Activity -->
+    <div class="content-card recent-students animated fadeInLeft">
+      <div class="card-header">
+        <h2>Recent Enrollments</h2>
+        <a routerLink="/students" class="view-all">View List</a>
+      </div>
+      <div class="students-list-wrapper" [class.no-fade]="isLoading || recentStudents.length <= 5">
+      <div class="students-list">
+        @if (isLoading) {
+          @for (i of [1,2,3,4]; track i) {
+            <div class="student-item skeleton-row">
+              <div class="student-avatar">
+                <div class="skeleton-circle"></div>
+              </div>
+              <div class="student-info">
+                <span class="skeleton-line skeleton-name"></span>
+                <span class="skeleton-line skeleton-meta"></span>
+              </div>
+              <div class="enroll-time">
+                <span class="skeleton-line skeleton-time"></span>
+              </div>
+              <div class="status-indicator">
+                <span class="skeleton-line skeleton-badge"></span>
+              </div>
+            </div>
+          }
+        } @else {
+          @for (student of recentStudents; track student.id) {
+            <div class="student-item">
+              <div class="student-avatar">
+                @if (student.photo) {
+                  <img [src]="student.photo" [alt]="student.name">
+                } @else {
+                  <div class="avatar-placeholder">
+                    {{ student.name[0] }}
+                  </div>
+                }
+              </div>
+              <div class="student-info">
+                <span class="name">{{ student.name }}</span>
+                <span class="meta">{{ student.course }} • {{ student.department }}</span>
+              </div>
+              <div class="enroll-time">
+                <lucide-icon [img]="ClockIcon" class="time-icon"></lucide-icon>
+                {{ student.createdAt | date:'shortTime' }}
+              </div>
+              <div class="status-indicator">
+                <span class="badge success">Verified</span>
+              </div>
+            </div>
+          } @empty {
+            <div class="empty-state">
+              <lucide-icon [img]="UsersIcon" class="empty-icon"></lucide-icon>
+              <p>No recent enrollments found</p>
+            </div>
+          }
+        }
+      </div>
+      </div>
+    </div>
+
+    <!-- Quick Insights -->
+    <div class="insights-column animated fadeInRight">
+      <div class="content-card info-card">
+        <h3>System Connectivity</h3>
+        <div class="status-item" [class.inactive]="!isBackendHealthy">
+          <lucide-icon [img]="CheckIcon" class="status-icon" [class.green]="isBackendHealthy" [class.red]="!isBackendHealthy"></lucide-icon>
+          <span>{{ isBackendHealthy ? 'API Integration Live' : 'API Connection Lost' }}</span>
+        </div>
+        <div class="status-item">
+          <lucide-icon [img]="CheckIcon" class="status-icon green"></lucide-icon>
+          <span>Enrollment Service Active</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

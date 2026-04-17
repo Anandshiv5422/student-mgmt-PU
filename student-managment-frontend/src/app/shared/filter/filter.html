@@ -1,0 +1,28 @@
+<div class="filter-dropdown">
+  <button class="filter-toggle" (click)="toggleDropdown()" [class.active]="value !== '' || isOpen">
+    <lucide-icon [img]="FilterIcon" class="icon"></lucide-icon>
+    <span>{{ selectedLabel }}</span>
+    <lucide-icon [img]="ChevronDown" class="chevron" [class.rotated]="isOpen"></lucide-icon>
+  </button>
+
+  @if (isOpen) {
+    <div class="dropdown-menu">
+      <div 
+        class="dropdown-item" 
+        [class.active]="value === ''"
+        (click)="selectOption('')"
+      >
+        All {{ label }}
+      </div>
+      @for (option of options; track option.value) {
+        <div 
+          class="dropdown-item" 
+          [class.active]="value === option.value"
+          (click)="selectOption(option.value)"
+        >
+          {{ option.label }}
+        </div>
+      }
+    </div>
+  }
+</div>

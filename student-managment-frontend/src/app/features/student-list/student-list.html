@@ -1,0 +1,154 @@
+<div class="page-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <h1 class="page-title">Student Directory</h1>
+      <p class="page-subtitle">Manage and track student enrollment details</p>
+    </div>
+    <div class="header-stats">
+      <div class="stat-item">
+        <span class="stat-label">Total Students</span>
+        <span class="stat-value">{{ students.length }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-card shadow-sm">
+    <div class="search-box">
+      <lucide-icon [img]="SearchIcon" class="icon"></lucide-icon>
+      <input 
+        type="text" 
+        placeholder="Search by name or admission no..." 
+        [(ngModel)]="searchQuery"
+        (input)="onSearchChange()"
+      >
+    </div>
+
+    <div class="filter-group">
+      <div class="select-wrapper">
+        <lucide-icon [img]="GraduationIcon" class="icon select-icon"></lucide-icon>
+        <select [(ngModel)]="selectedCourse" (change)="applyFilters()">
+          <option value="">All Courses</option>
+          @for (course of courses; track course) {
+            <option [value]="course">{{ course }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="date-group">
+        <div class="date-input">
+          <lucide-icon [img]="CalendarIcon" class="icon"></lucide-icon>
+          <input type="date" [(ngModel)]="startDate" (change)="applyFilters()" placeholder="Start Date">
+        </div>
+        <span class="date-sep">to</span>
+        <div class="date-input">
+          <lucide-icon [img]="CalendarIcon" class="icon"></lucide-icon>
+          <input type="date" [(ngModel)]="endDate" (change)="applyFilters()" placeholder="End Date">
+        </div>
+      </div>
+
+      <button class="reset-btn" (click)="searchQuery=''; selectedCourse=''; startDate=''; endDate=''; applyFilters()" title="Reset Filters">
+        <lucide-icon [img]="XIcon" class="icon"></lucide-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Table Section -->
+  <div class="table-section" [class.loading]="isLoading">
+    @if (isLoading) {
+      <div class="table-loader">
+        <div class="spinner"></div>
+        <span>Fetching student data...</span>
+      </div>
+    }
+    <app-table 
+      [columns]="columns" 
+      [data]="filteredStudents"
+      (onView)="onViewStudent($event)"
+      (onEdit)="onEditStudent($event)"
+      (onDelete)="onDeleteStudent($event)"
+    ></app-table>
+  </div>
+</div>
+
+<!-- View Student Modal -->
+@if (showViewModal && selectedStudent) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="user-info">
+          <div class="user-avatar">
+            <img [src]="selectedStudent.photo || 'https://via.placeholder.com/150'" alt="Avatar">
+          </div>
+          <div class="name-meta">
+            <h2>{{ selectedStudent.name }}</h2>
+            <span class="id-badge">{{ selectedStudent.admissionNo }}</span>
+          </div>
+        </div>
+        <button class="close-btn" (click)="closeModal()">
+          <lucide-icon [img]="XIcon" class="icon"></lucide-icon>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="info-grid">
+          <div class="info-section">
+            <h3>Academic Details</h3>
+            <div class="info-row">
+              <lucide-icon [img]="BriefcaseIcon" class="label-icon"></lucide-icon>
+              <div class="data">
+                <span class="label">Department</span>
+                <span class="value">{{ selectedStudent.department }}</span>
+              </div>
+            </div>
+            <div class="info-row">
+              <lucide-icon [img]="GraduationIcon" class="label-icon"></lucide-icon>
+              <div class="data">
+                <span class="label">Course</span>
+                <span class="value">{{ selectedStudent.course }}</span>
+              </div>
+            </div>
+            <div class="info-row">
+              <lucide-icon [img]="CalendarIcon" class="label-icon"></lucide-icon>
+              <div class="data">
+                <span class="label">Current Semester</span>
+                <span class="value">{{ selectedStudent.semester }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-section">
+            <h3>Contact Information</h3>
+            <div class="info-row">
+              <lucide-icon [img]="MailIcon" class="label-icon"></lucide-icon>
+              <div class="data">
+                <span class="label">Email Address</span>
+                <span class="value">{{ selectedStudent.email }}</span>
+              </div>
+            </div>
+            <div class="info-row">
+              <lucide-icon [img]="PhoneIcon" class="label-icon"></lucide-icon>
+              <div class="data">
+                <span class="label">Mobile Number</span>
+                <span class="value">{{ selectedStudent.mobile }}</span>
+              </div>
+            </div>
+            <div class="info-row">
+              <lucide-icon [img]="MapIcon" class="label-icon"></lucide-icon>
+              <div class="data">
+                <span class="label">Address</span>
+                <span class="value">{{ selectedStudent.addressLine }}, {{ selectedStudent.city }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="enrollment-footer">
+          <lucide-icon [img]="CheckIcon" class="footer-icon"></lucide-icon>
+          <span>Enrolled on {{ selectedStudent.createdAt | date:'longDate' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,10 @@
+<div class="search-container">
+  <lucide-icon [img]="SearchIcon" class="search-icon"></lucide-icon>
+  <input 
+    type="text" 
+    class="search-input" 
+    [placeholder]="placeholder" 
+    [ngModel]="searchTerm"
+    (ngModelChange)="onSearchChange($event)"
+  />
+</div>

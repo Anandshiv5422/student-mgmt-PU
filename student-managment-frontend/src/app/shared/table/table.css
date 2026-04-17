@@ -1,0 +1,207 @@
+:host {
+  display: block;
+}
+
+.table-container {
+  background-color: var(--surface-color);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.table-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.data-table th {
+  padding: 0.6rem 0.8rem;
+  background-color: #fcfcfc;
+  border-bottom: 2px solid var(--border-color);
+  color: var(--text-gray);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  user-select: none;
+}
+
+.data-table th.sortable {
+  cursor: pointer;
+  transition: background-color var(--transition-speed);
+}
+
+.data-table th.sortable:hover {
+  background-color: var(--bg-color);
+}
+
+.th-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sort-icon {
+  width: 10px;
+  height: 10px;
+  stroke-width: 2px;
+  opacity: 0.5;
+}
+
+.data-table td {
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-dark);
+  font-size: 0.75rem;
+  transition: background-color var(--transition-speed);
+}
+
+.data-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.data-table tbody tr:hover td {
+  background-color: #fff9e6; /* very light yellow */
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Checkbox */
+.checkbox-cell {
+  width: 30px;
+  text-align: center;
+  padding-left: 0.8rem !important;
+  padding-right: 0 !important;
+}
+
+.custom-checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary-color);
+  cursor: pointer;
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background-color: var(--bg-color);
+  color: var(--text-dark);
+}
+
+.badge.assigned, .badge.published {
+  background-color: #e6f7ff;
+  color: #0088cc;
+}
+
+.badge.draft {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.badge.active {
+  background-color: #e6ffed;
+  color: #00a430;
+}
+
+/* Actions */
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-gray);
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all var(--transition-speed);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.action-btn.edit:hover {
+  background-color: #e6f7ff;
+  color: #0088cc;
+}
+
+.action-btn.delete:hover {
+  background-color: #ffeaea;
+  color: #d11a2a;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: var(--surface-color);
+  border-top: 1px solid var(--border-color);
+}
+
+.page-info {
+  font-size: 0.875rem;
+  color: var(--text-gray);
+}
+
+.page-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.page-btn {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dark);
+  transition: all var(--transition-speed);
+}
+
+.page-btn .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.page-btn:hover:not(:disabled) {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--bg-color);
+}
